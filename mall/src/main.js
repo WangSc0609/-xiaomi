@@ -17,7 +17,8 @@ if (mock) {
 axios.defaults.baseURL = '/api' //接口代理
 axios.defaults.timeout = 8000 //8秒超时
     // axios.defaults.baseURL = env.baseURL;
-    //接口错误拦截
+
+//接口错误拦截
 axios.interceptors.response.use(function(response) { //response 参数是 axios 封装好的
     let res = response.data;
     if (res.status == 0) {
