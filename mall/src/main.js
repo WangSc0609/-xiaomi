@@ -4,8 +4,12 @@ import axios from 'axios'
 // import VueAxios from 'vue-axios'
 // import env from './env'
 import App from './App.vue'
+import VueLazyload from 'vue-lazyload'
 
 Vue.prototype.axios = axios
+Vue.use(VueLazyload, {
+    loading: '/imgs/loading-svg/loading-bars.svg'
+})
 
 //mock开关
 const mock = true
@@ -23,7 +27,7 @@ axios.interceptors.response.use(function(response) { //response 参数是 axios 
     let res = response.data;
     if (res.status == 0) {
         return res.data;
-    } else if (res.status == 10) { //这个项目的后台设定:未登录时接口状态为10
+    } else if (res.status == 10) { //后台设定：未登录时接口状态为10
         window.location.href = '/#/login';
     } else {
         alert(res.msg);
