@@ -5,14 +5,16 @@ import axios from 'axios'
 // import env from './env'
 import App from './App.vue'
 import VueLazyload from 'vue-lazyload'
+import VueCookie from 'vue-cookie'
 
 Vue.prototype.axios = axios
 Vue.use(VueLazyload, {
     loading: '/imgs/loading-svg/loading-bars.svg'
 })
+Vue.use(VueCookie)
 
 //mock开关
-const mock = true
+const mock = false
 if (mock) {
     require('./mock/api')
 }
@@ -25,18 +27,22 @@ axios.defaults.timeout = 8000 //8秒超时
 //接口错误拦截
 axios.interceptors.response.use(function(response) { //response 参数是 axios 封装好的
     let res = response.data;
+    let path = location.hash;
     if (res.status == 0) {
         return res.data;
     } else if (res.status == 10) { //后台设定：未登录时接口状态为10
-        window.location.href = '/#/login';
+        if (path != '#/index') {
+            window.location.href = '/#/login';
+        }
     } else {
         alert(res.msg);
+        return Promise.reject(res);
     }
-
 })
 
 // Vue.use(VueAxios, axios); //以后可以用this调用
 Vue.config.productionTip = false
+
 
 
 new Vue({

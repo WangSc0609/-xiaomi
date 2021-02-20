@@ -16,7 +16,22 @@ export default {
     }
   },
   mounted(){
-   
+    //在页面载入时，拉取一次用户信息和购物车商品数量
+    this.getUser();
+    this.getCartCount()
+
+  },
+  methods:{
+    getUser(){
+      this.axios.get('/user').then(()=>{
+        //to-do 保存到vuex里面
+      })
+    },
+    getCartCount(){
+      this.axios.get('/carts/products/sum').then(()=>{
+        //to-do 保存到vuex里面
+      })
+    }
   }
 }
 </script>
