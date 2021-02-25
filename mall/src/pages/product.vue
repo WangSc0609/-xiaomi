@@ -1,14 +1,15 @@
 <template>
   <div class="product">
-    <product-param>
+    <!--productParam组件-->
+    <product-param :title="product.name">
       <template v-slot:buy>
-        <button class="btn">立即购买</button>
+        <button class="btn" @click="buy">立即购买</button>
       </template>
     </product-param>
     <div class="content">
       <div class="item-bg">
-        <h2>小米8</h2>
-        <h3>8周年旗舰版</h3>
+        <h2>{{product.name}}</h2>
+        <h3>{{product.subtitle}}</h3>
         <p>
           <a href="" id="">全球首款双频 GP</a>
           <span>|</span>
@@ -19,7 +20,7 @@
           <a href="" id="">红外人脸识别</a>
         </p>
         <div class="price">
-          <span>￥<em>2599</em></span>
+          <span>￥<em>{{product.price}}</em></span>
         </div>
       </div>
       <div class="item-bg-2"></div>
@@ -39,12 +40,12 @@
       <div class="item-video">
         <h2>60帧超慢动作摄影<br/>慢慢回味每一瞬间的精彩</h2>
         <p>后置960帧电影般超慢动作视频，将眨眼间的美妙展现得淋漓尽致！<br/>更能AI 精准分析视频内容，15个场景智能匹配背景音效。</p>
-        <div class="video-bg"></div>
+        <div class="video-bg" @click="showSlide=true"></div>
         <div class="video-box">
           <!--遮罩层-->
-          <div class="overlay"></div>
-          <div class="video">
-            <span class="icon-close"></span>
+          <div class="overlay" v-if="showSlide"></div>
+          <div class="video" :class="{'slide':showSlide}">
+            <span class="icon-close" @click="quitVideo"></span>
             <video src="/imgs/product/video.mp4" controls="controls" autoplay muted></video>
           </div>
         </div>
@@ -66,6 +67,8 @@ export default {
   },
   data(){
     return{
+      showSlide:false,  //控制动画效果
+      product:{},   //商品信息
       swiperOptions:{
         autoplay:true,
         slidesPerView:3,
@@ -76,6 +79,26 @@ export default {
           clickable :true
         }
       }
+    }
+  },
+  mounted(){
+    this.getProductInfo();
+  },
+  methods:{
+    quitVideo(){
+      this.showSlide=false;
+      let vi = document.getElementsByTagName('video')[0]
+      vi.pause();
+    },
+    getProductInfo(){
+      let id=this.$route.params.id;
+      this.axios.get(`/products/${id}`).then((res)=>{
+        this.product=res;
+      })
+    },
+    buy(){
+      let id=this.$route.params.id;
+      this.$router.push(`/detail/${id}`);
     }
   }
 }
@@ -171,22 +194,28 @@ export default {
             opacity: .4;
             z-index: 10;
           }
-          .icon-close{
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            @include bgImg(20px,20px,'/imgs/icon-close.png');
-            cursor: pointer;
-            z-index: 11;
-          }
           .video{
             position: fixed;
-            top: 50%;
+            top: -50%;
             left: 50%;
             transform: translate(-50%,-50%);
             z-index: 10;
             width: 1000px;
             height: 536px;
+            opacity: 0;
+            transition: all .6s;
+            &.slide{
+              top:50%;
+              opacity: 1;
+            }
+            .icon-close{
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              @include bgImg(20px,20px,'/imgs/icon-close.png');
+              cursor: pointer;
+              z-index: 11;
+            }
             video{
               width: 100%;
               height: 100%;
