@@ -94,7 +94,7 @@
     </div>
     <!--售后服务组件-->
     <service-bar></service-bar>
-    <!--添加购物车组件-->
+    <!--添加购物车弹框组件-->
     <modal
       title="提示"
       confirmText="查看购物车"
