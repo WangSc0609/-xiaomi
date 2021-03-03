@@ -54,10 +54,19 @@ export default{
         username,
         password
       }).then((res)=>{
-        this.$cookie.set('userId',res.id,{expires:'1M'});
+        this.$cookie.set('userId',res.id,{expires:'Session'});
         //保存用户名
         this.$store.dispatch('saveUserName',res.username);
-        this.$router.push('/index');
+        this.$router.push({
+          /**
+           * params传参:name(路由名称),get请求，在地址栏看不见，参数保存在内存中
+           * query传参:path(路由路径),post请求,可以在地址栏看见
+           */
+          name:'index',
+          params:{
+            from:'login'
+          }
+        });
       })
     },
     //注册
@@ -67,7 +76,7 @@ export default{
         password:'wang99',
         email:'wang@qq.com'
       }).then(()=>{
-        alert('注册成功！')
+        this.$message.success('注册成功！')
       })
     }
   }

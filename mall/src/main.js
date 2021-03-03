@@ -6,6 +6,8 @@ import axios from 'axios'
 import App from './App.vue'
 import VueLazyload from 'vue-lazyload'
 import VueCookie from 'vue-cookie'
+import { Message } from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import store from './store/index'
 
 Vue.prototype.axios = axios
@@ -13,6 +15,9 @@ Vue.use(VueLazyload, {
     loading: '/imgs/loading-svg/loading-bars.svg'
 })
 Vue.use(VueCookie)
+
+//element-ui
+Vue.prototype.$message = Message;
 
 //mock开关
 const mock = false
@@ -37,7 +42,7 @@ axios.interceptors.response.use(function(response) { //response 参数是 axios 
         }
         return Promise.reject(res);
     } else {
-        alert(res.msg);
+        Message.warning(res.msg)
         return Promise.reject(res);
     }
 })

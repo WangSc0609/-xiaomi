@@ -16,10 +16,10 @@ export default {
     }
   },
   mounted(){
-    //在页面载入时，拉取一次用户信息和购物车商品数量
-    this.getUser();
-    this.getCartCount()
-
+    if(this.$cookie.get('userId')){
+      this.getUser();
+      this.getCartCount()
+    }
   },
   methods:{
     getUser(){

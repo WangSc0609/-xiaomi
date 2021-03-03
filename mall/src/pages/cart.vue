@@ -74,6 +74,7 @@ import OrderHeader from './../components/OrderHeader'
 import ServiceBar from './../components/ServiceBar'
 import NavFooter from './../components/NavFooter'
 import Modal from './../components/Modal'
+
 export default {
   name:'cart',
   components:{
@@ -108,13 +109,13 @@ export default {
           selected=item.productSelected;
       if(type == '-'){
         if(quantity == 1){
-          alert('商品至少保留一件！');
+          this.$message.warning('商品至少保留一件！');
           return
         }
         --quantity
       }else if(type == '+'){
         if(quantity > item.productStock){
-          alert('商品不能超过库存数量');
+          this.$message.warning('商品不能超过库存数量');
           return
         }
         ++quantity
@@ -138,9 +139,9 @@ export default {
     //移除购物车商品
     delProduct(){
       let item=this.itemData;
-      console.log(item)
       this.axios.delete(`carts/${item.productId}`).then((res)=>{
         this.renderData(res)
+        this.$message.success('删除成功')
       })
       this.itemData={}
       this.showModal=false;
@@ -156,7 +157,7 @@ export default {
       //isCheck返回布尔值，true代表每件商品都没有选中
       let isCheck = this.list.every(item=>!item.productSelected);
       if(isCheck){
-        alert('请选择至少一件商品')
+        this.$message.warning('请选择至少一件商品')
       }else {
         this.$router.push('/order/confirm')
       }
