@@ -66,6 +66,7 @@
   import Loading from './../components/Loading'
   import NoData from './../components/NoData'
   import { Pagination } from 'element-ui'
+  import infiniteScroll from 'vue-infinite-scroll'
   export default{
     name:'order-list',
     components:{
@@ -74,13 +75,16 @@
       NoData,
       [Pagination.name]:Pagination
     },
+    directives: {
+      infiniteScroll
+    },
     data(){
       return {
         loading:true,
         list:[],
         PageSize:10,
         PageNum:1,
-        total:0
+        total:0,
       }
     },
     mounted(){
@@ -100,6 +104,7 @@
           this.loading = false;
         })
       },
+      //返回到支付页面
       goPay(orderNo){
         this.$router.push({
           path:'/order/pay',
@@ -108,9 +113,11 @@
           }
         })
       },
+      //分页器
       handleChange(pageNum){
         this.pageNum=pageNum;
-        this.getOrderList()
+        this.getOrderList();
+        document.documentElement.scrollTo(0,0);
       }
     }
   }
@@ -188,3 +195,4 @@
     }
   }
 </style>
+
