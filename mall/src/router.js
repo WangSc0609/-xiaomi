@@ -29,48 +29,57 @@ export default new Router({
                 }, {
                     path: '/product/:id',
                     name: 'product',
-                    component: resolve => require(['./pages/product.vue'], resolve),
+                    component: () =>
+                        import ('./pages/product.vue')
                 },
                 {
                     path: '/detail/:id',
                     name: 'detail',
-                    component: resolve => require(['./pages/detail.vue'], resolve),
+                    component: () =>
+                        import ('./pages/detail.vue')
                 }
             ]
         },
         {
             path: '/login',
             name: 'login',
-            component: resolve => require(['./pages/login.vue'], resolve),
+            component: () =>
+                import ('./pages/login.vue')
         },
         {
             path: '/cart',
             name: 'cart',
-            component: resolve => require(['./pages/cart.vue'], resolve),
+            component: () =>
+                import ('./pages/cart.vue')
         },
         {
             path: '/order',
             name: 'order',
-            component: resolve => require(['./pages/order.vue'], resolve),
+            component: () =>
+                import ('./pages/order.vue'),
             children: [{
                     path: 'list', //子路由会带上父路由的路径，不能斜杠
                     name: 'order-list',
-                    component: resolve => require(['./pages/orderList.vue'], resolve),
+                    component: () =>
+                        import ('./pages/orderList.vue')
                 },
                 {
                     path: 'confirm',
                     name: 'order-confirm',
-                    component: resolve => require(['./pages/orderConfirm.vue'], resolve),
+                    component: () =>
+                        import ('./pages/orderConfirm.vue')
 
                 },
                 {
                     path: 'pay',
                     name: 'order-pay',
-                    component: resolve => require(['./pages/orderPay.vue'], resolve),
+                    component: () =>
+                        import ('./pages/orderPay.vue')
                 }, {
                     path: 'alipay',
                     name: 'alipay',
-                    component: resolve => require(['./pages/alipay.vue'], resolve),
+                    component: () =>
+                        import ('./pages/alipay.vue')
                 }
             ]
         }

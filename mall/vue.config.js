@@ -12,5 +12,8 @@ module.exports = {
             }
         }
     },
-    productionSourceMap: false
+    productionSourceMap: false,
+    chainWebpack: (config) => { //config拿到webpack配置参数
+        config.plugins.delete('prefetch'); //防止一次性将所有文件预加载出来
+    }
 }
